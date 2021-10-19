@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    depends_on:
+      - fpm_7.3
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites-enabled:/etc/nginx/sites-enabled
+      - .:/var/www
+    networks:
+      fuel:
+        aliases:
+          - fuel.local
+
+  fpm_7.3:
+    build: ./docker/fpm_7.3
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    working_dir: /var/www
+    volumes:
+      - ./docker/fpm_7.3/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug-conf.ini
+      - ./docker/fpm_7.3/php-fpm.d/www.conf:/user/local/etc/php-fpm.d/www.conf
+      - ./docker/fpm_7.3/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/fpm_7.3/data/log:/usr/local/log
+      - .:/var/www
+    networks:
+      fuel:
+
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: fuel_dev
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      fuel:
+
+networks:
+  fuel:
