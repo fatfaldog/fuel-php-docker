@@ -18,6 +18,7 @@ desktop.ini
 # the composer package lock file and install directory
 /composer.lock
 /fuel/vendor
+.composer
 
 # any of the fuel packages installed by default
 /docs/
