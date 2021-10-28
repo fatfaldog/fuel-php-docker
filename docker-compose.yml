@@ -27,7 +27,6 @@ services:
     volumes:
       - ./docker/fpm_7.3/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug-conf.ini
       - ./docker/fpm_7.3/php-fpm.d/www.conf:/user/local/etc/php-fpm.d/www.conf
-      - ./docker/fpm_7.3/data/log:/usr/local/log
       - .:/var/www
     networks:
       fuel:
